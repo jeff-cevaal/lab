@@ -1,0 +1,15 @@
+FROM ubuntu:24.04
+
+RUN sed -i 's|http://archive.ubuntu.com|http://us.archive.ubuntu.com|g' /etc/apt/sources.list.d/ubuntu.sources && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends curl ca-certificates && \
+    rm -rf /var/lib/apt/lists/*
+
+LABEL org.opencontainers.image.source="https://github.com/jeff-cevaal/lab"
+LABEL org.opencontainers.image.version="1.0.0"
+
+WORKDIR /app
+COPY updater .
+RUN chmod +x updater
+
+CMD ["./updater"]
