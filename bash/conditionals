@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# Description: Conditional Examples
+
+clear -x
+
+# And
+mkdir test && cd test
+pwd
+cd ..
+rmdir test
+echo -e
+
+# Or
+cd test || mkdir test
+rmdir test
+echo -e
+
+# Testing
+str1="hello"
+str2="world"
+[[ "$str1" == "$srt2" ]] && echo "Equal"
+[[ "$str1" != "$srt2" ]] && echo "Not equal"
+# Empty
+[[ -z "$name" ]] && echo "Empty"
+[[ -n "$name" ]] && echo "Not empty"
+
+

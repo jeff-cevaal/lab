@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# Description: Echos color of fruit
+
+greet()
+{
+	echo "Hello $1!"
+}
+
+clear -x
+greet "World"

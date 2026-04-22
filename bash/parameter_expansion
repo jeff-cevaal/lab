@@ -1,0 +1,58 @@
+#!/bin/bash
+
+# Description: Parameter Expansion examples
+
+clear
+
+# Default values
+name=""i
+echo "Hello, ${name:-User}"
+echo $name
+echo -e
+
+# Sets empty variable
+name=""
+echo "${name:=User}"
+echo "$name"
+echo -e
+
+# String length
+password="secretpass"
+echo "Length ${#password} \t\t<- string length"
+# Validation
+if [[ ${#password} -lt 12 ]]; then
+	echo "Password too short"
+fi
+echo -e
+
+filepath=~/jeff/backup.2024.tar.gz
+echo "Filepath: ${filepath}"
+# Remove suffix
+echo -e "${filepath%.*} \t\t<- suffix (shortest match)"
+echo -e "${filepath%%.*} \t\t\t<- suffix (longest match)"
+# Remove prefix
+echo -e "${filepath#*/} \t<- prefix (shortest match)"
+echo -e "${filepath##*/} \t\t<- prefix (longest match)"
+echo -e
+
+# Search & Replace
+text="hello world world"
+echo "${text}"
+echo -e "${text/world/bash} \t\t<- replace first match"
+echo -e "${text//world/bash} \t\t<- replace all matches"
+echo -e "${text// /} \t\t<- replace with nothing"
+echo -e
+
+# Path display trick
+echo "${PATH//:/$'\n'}"
+echo -e
+
+# Case Transformation
+name="hello world"
+echo -e "${name}"
+echo -e "${name^} \t\t<- capitalize first character"
+echo -e "${name^^} \t\t<- capitalize all"
+name="HELLO WORLD"
+echo -e "${name}"
+echo -e "${name,} \t\t<- lowercase first character"
+echo -e "${name,,} \t\t<- lowercase all"

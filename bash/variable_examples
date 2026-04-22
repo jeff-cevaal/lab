@@ -1,0 +1,54 @@
+#!/bin/bash
+
+# Desciption: Variables & Quoting examples
+
+clear
+
+# Strings
+name="World"
+echo -e "Hello, ${name} \t\t<- variable expansion"
+echo -e 'Hello, ${name} \t\t<- literal text string'
+echo -e
+
+# Spacing
+message="Hello  World!"
+echo -e ${message}" \t\t<- spacing collapsed"
+echo -e "${message} \t\t<- spacing preserved"
+echo -e
+
+# Quoting
+file="my important file.txt"
+touch "${file}"
+echo -e "File created: \t\t$(ls my*)"
+#rm ${file} <- error: tries deleting my, important & file.txt
+echo -e "Deletes: \t\t${file}"
+rm "${file}"
+echo "$(ls my*)"
+
+# Substitution
+today=$(date +%Y-%m-%d)
+echo -e "Today is ${today} \t<- variable substitution"
+echo -e
+
+current_dir=$(pwd)
+echo -e "${current_dir} \t<- current directory"
+echo -e
+
+# Special variables
+echo -e "Script name: \t\t$0"
+echo -e "First argument: \t$1"
+echo -e "All arguments: \t\t$@"
+echo -e "Number of arguments: \t$#"
+echo -e
+
+echo -e "Process ID: \t\t$$"
+echo -e "Username: \t\t$USER"
+echo -e "Home dir: \t\t$HOME"
+echo -e "Current dir: \t\t$PWD"
+echo -e
+
+# Exit code
+echo -e "Exit code: $? \t\t<- success"
+$(ls /not_here)
+echo -e "Exit code: $? \t\t<- failure"
+echo -e
