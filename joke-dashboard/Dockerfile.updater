@@ -1,15 +1,28 @@
-FROM ubuntu:24.04
+# Stage 1: Build & preparation stage
+FROM ubuntu:24.04 AS builder
 
-RUN sed -i 's|http://archive.ubuntu.com|http://us.archive.ubuntu.com|g' /etc/apt/sources.list.d/ubuntu.sources && \
-    apt-get update && \
-    apt-get install -y --no-install-recommends curl ca-certificates && \
-    rm -rf /var/lib/apt/lists/*
-
-LABEL org.opencontainers.image.source="https://github.com/jeff-cevaal/lab"
-LABEL org.opencontainers.image.version="1.0.0"
-
-WORKDIR /app
+WORKDIR /build
 COPY updater .
 RUN chmod +x updater
 
+# Stage 2: Runtime stage (minimal image)
+FROM alpine:3.21
+
+# Install only runtime dependencies
+RUN apk add --no-cache curl ca-certificates bash
+
+# Create non-root user matching UID 101 (nginx-unprivileged default)
+RUN addgroup -g 101 appgroup && \
+    adduser -u 101 -G appgroup -D appuser
+
+WORKDIR /app
+
+# Copy prepared script from builder stage
+COPY --from=builder --chown=appuser:appgroup /build/updater .
+
+# Labels
+LABEL org.opencontainers.image.source="https://github.com/jeff-cevaal/lab"
+LABEL org.opencontainers.image.version="1.0.0"
+
+USER appuser
 CMD ["./updater"]
